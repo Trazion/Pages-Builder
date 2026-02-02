@@ -419,19 +419,24 @@ async function handleStandardModeCreate() {
 }
 
 async function handlePromptModeCreate() {
-    const brandName = document.getElementById('prompt-brand-name').value;
-    const prompt = document.getElementById('creative-prompt').value;
+    const brandName = document.getElementById('prompt-brand-name').value.trim();
+    const prompt = document.getElementById('creative-prompt').value.trim();
+
+    console.log('Prompt mode create:', { brandName, prompt, promptSelectedTheme });
 
     if (!brandName) {
         showToast('Please enter a brand name', 'error');
+        console.log('Validation failed: no brand name');
         return;
     }
     if (!promptSelectedTheme) {
-        showToast('Please select a theme', 'error');
+        showToast('Please select a theme below', 'error');
+        console.log('Validation failed: no theme selected');
         return;
     }
     if (!prompt) {
         showToast('Please describe your landing page vision', 'error');
+        console.log('Validation failed: no prompt');
         return;
     }
 
