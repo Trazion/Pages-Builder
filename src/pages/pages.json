@@ -3,8 +3,8 @@
     {
       "id": "page-1770044994050",
       "brandName": "Selinza",
-      "themeId": "modern-luxury",
-      "themeName": "Modern Luxury",
+      "themeId": "luxury-oud",
+      "themeName": "Luxury Oud",
       "logoPath": "/attached_assets/IMG_6305_1770042574580.jpeg",
       "tagline": "Luxury Scents. Timeless Elegance.",
       "ctaText": "Get Offer",
@@ -13,7 +13,7 @@
       "offerTitle": "Exclusive Offer",
       "offerDescription": "Discover your signature scent with our exclusive collection.",
       "createdAt": "2026-02-02T15:09:54.050Z",
-      "updatedAt": "2026-02-02T15:38:49.833Z",
+      "updatedAt": "2026-02-02T15:45:25.561Z",
       "sections": [
         {
           "id": "hero",
@@ -72,6 +72,71 @@
           "data": {}
         }
       ]
+    },
+    {
+      "id": "page-1770047208102",
+      "brandName": "Selinza",
+      "themeId": "luxury-oud",
+      "themeName": "Luxury Oud",
+      "logoPath": null,
+      "tagline": "Luxury Scents. Timeless Elegance.",
+      "ctaText": "Get Offer",
+      "perfumeType": "luxury",
+      "aboutText": "Selinza represents the pinnacle of luxury perfumery. Each fragrance is meticulously crafted using the finest ingredients sourced from around the world, blending tradition with modern sophistication.",
+      "offerTitle": "Exclusive Offer",
+      "offerDescription": "Discover your signature scent with our exclusive collection.",
+      "sections": [
+        {
+          "id": "hero-1770047208102",
+          "type": "hero",
+          "data": {
+            "tagline": "Luxury Scents. Timeless Elegance.",
+            "ctaText": "Get Offer"
+          }
+        },
+        {
+          "id": "about-1770047208102",
+          "type": "about",
+          "data": {
+            "title": "The Art of Fragrance",
+            "text": "Selinza represents the pinnacle of luxury perfumery. Each fragrance is meticulously crafted using the finest ingredients sourced from around the world, blending tradition with modern sophistication."
+          }
+        },
+        {
+          "id": "features-1770047208103",
+          "type": "features",
+          "data": {
+            "items": [
+              "INSTALLMENT",
+              "3 DAYS RETURN",
+              "CASH ON DELIVERY",
+              "FAST DELIVERY"
+            ]
+          }
+        },
+        {
+          "id": "offer-1770047208103",
+          "type": "offer",
+          "data": {
+            "title": "Exclusive Offer",
+            "description": "Discover your signature scent with our exclusive collection."
+          }
+        },
+        {
+          "id": "policy-1770047208103",
+          "type": "policy",
+          "data": {
+            "email": "info@selinza.com"
+          }
+        },
+        {
+          "id": "footer-1770047208103",
+          "type": "footer",
+          "data": {}
+        }
+      ],
+      "createdAt": "2026-02-02T15:46:48.102Z",
+      "updatedAt": "2026-02-02T15:46:48.102Z"
     }
   ]
 }

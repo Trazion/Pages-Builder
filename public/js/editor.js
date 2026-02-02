@@ -75,6 +75,7 @@ function setupEventListeners() {
     document.getElementById('setting-brand-name').addEventListener('input', handleSettingsChange);
     document.getElementById('setting-tagline').addEventListener('input', handleSettingsChange);
     document.getElementById('setting-cta').addEventListener('input', handleSettingsChange);
+    document.getElementById('setting-cta-link').addEventListener('input', handleSettingsChange);
     document.getElementById('setting-theme').addEventListener('change', handleSettingsChange);
 
     window.addEventListener('beforeunload', (e) => {
@@ -89,6 +90,7 @@ function populateSettings() {
     document.getElementById('setting-brand-name').value = pageData.brandName || '';
     document.getElementById('setting-tagline').value = pageData.tagline || '';
     document.getElementById('setting-cta').value = pageData.ctaText || 'Get Offer';
+    document.getElementById('setting-cta-link').value = pageData.ctaLink || '#';
 
     const themeSelect = document.getElementById('setting-theme');
     themeSelect.innerHTML = themes.map(t =>
@@ -100,6 +102,7 @@ function handleSettingsChange() {
     pageData.brandName = document.getElementById('setting-brand-name').value;
     pageData.tagline = document.getElementById('setting-tagline').value;
     pageData.ctaText = document.getElementById('setting-cta').value;
+    pageData.ctaLink = document.getElementById('setting-cta-link').value;
     pageData.themeId = document.getElementById('setting-theme').value;
     hasChanges = true;
     renderCanvas();
@@ -155,7 +158,7 @@ function renderSection(section, theme, isDark, index) {
                         <div>
                             ${pageData.logoPath ? `<img src="${pageData.logoPath}" style="max-width: 300px; margin-bottom: 20px; border-radius: 8px;">` : `<h1 style="color: ${theme.colors.accent}; font-size: 3rem; letter-spacing: 6px; margin-bottom: 20px;">${pageData.brandName.toUpperCase()}</h1>`}
                             <p class="editable" data-field="tagline" data-section="${index}" style="color: ${isDark ? theme.colors.text : theme.colors.textDark}; font-size: 1.3rem; letter-spacing: 3px; margin-bottom: 40px;">${section.data.tagline || pageData.tagline}</p>
-                            <a href="#" style="display: inline-block; padding: 16px 40px; background: ${isDark ? theme.colors.accent : theme.colors.accent}; color: ${isDark ? theme.colors.primary : '#fff'}; text-decoration: none; border-radius: 8px; font-weight: 500; letter-spacing: 2px;">${section.data.ctaText || pageData.ctaText}</a>
+                            <a href="${pageData.ctaLink || '#'}" style="display: inline-block; padding: 16px 40px; background: ${isDark ? theme.colors.accent : theme.colors.accent}; color: ${isDark ? theme.colors.primary : '#fff'}; text-decoration: none; border-radius: 8px; font-weight: 500; letter-spacing: 2px;">${section.data.ctaText || pageData.ctaText}</a>
                         </div>
                     </section>
                 </div>`;
@@ -673,6 +676,7 @@ async function savePage() {
             themeId: pageData.themeId,
             tagline: pageData.tagline,
             ctaText: pageData.ctaText,
+            ctaLink: pageData.ctaLink,
             sections: sections
         };
 

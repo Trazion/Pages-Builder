@@ -165,7 +165,7 @@ app.post('/api/pages', (req, res) => {
 });
 
 app.put('/api/pages/:id', (req, res) => {
-    const { brandName, themeId, logoPath, tagline, ctaText, perfumeType, aboutText, offerTitle, offerDescription, sections } = req.body;
+    const { brandName, themeId, logoPath, tagline, ctaText, ctaLink, perfumeType, aboutText, offerTitle, offerDescription, sections } = req.body;
 
     const pagesData = loadPages();
     const pageIndex = pagesData.pages.findIndex(p => p.id === req.params.id);
@@ -190,6 +190,7 @@ app.put('/api/pages/:id', (req, res) => {
         logoPath: logoPath !== undefined ? logoPath : pagesData.pages[pageIndex].logoPath,
         tagline: tagline || pagesData.pages[pageIndex].tagline,
         ctaText: ctaText || pagesData.pages[pageIndex].ctaText,
+        ctaLink: ctaLink !== undefined ? ctaLink : pagesData.pages[pageIndex].ctaLink,
         perfumeType: perfumeType || pagesData.pages[pageIndex].perfumeType,
         aboutText: aboutText || pagesData.pages[pageIndex].aboutText,
         offerTitle: offerTitle || pagesData.pages[pageIndex].offerTitle,
@@ -766,7 +767,7 @@ function generateSectionHtml(section, pageData, theme, isDark) {
         <div class="fade-in">
             ${pageData.logoPath ? `<img src="${pageData.logoPath}" alt="${pageData.brandName}" style="max-width: 350px; width: 80%; margin-bottom: 30px; border-radius: 8px;">` : `<h1 style="color: var(--accent); font-size: 4rem; letter-spacing: 8px; margin-bottom: 20px;">${pageData.brandName.toUpperCase()}</h1>`}
             <p style="color: ${isDark ? 'var(--text)' : 'var(--text-dark)'}; font-size: 1.5rem; letter-spacing: 4px; margin-bottom: 50px; opacity: 0.9;">${section.data.tagline || pageData.tagline}</p>
-            <a href="#offer" class="btn-primary">${section.data.ctaText || pageData.ctaText}</a>
+            <a href="${pageData.ctaLink || '#offer'}" class="btn-primary">${section.data.ctaText || pageData.ctaText}</a>
         </div>
     </section>`;
 
