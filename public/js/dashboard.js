@@ -47,7 +47,20 @@ function setupEventListeners() {
     });
 
     const createForm = document.getElementById('create-form');
-    createForm.addEventListener('submit', handleCreatePage);
+    if (createForm) {
+        createForm.addEventListener('submit', handleCreatePage);
+        console.log('Form event listener attached successfully');
+    } else {
+        console.error('Create form not found!');
+    }
+    
+    // Also add click handler to button as backup
+    const createBtn = document.getElementById('create-btn');
+    if (createBtn) {
+        createBtn.addEventListener('click', (e) => {
+            console.log('Create button clicked via direct handler');
+        });
+    }
 
     const uploadArea = document.getElementById('upload-area');
     const logoInput = document.getElementById('logo-input');
