@@ -1,0 +1,327 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-blue: #0a1f5c;
+    --deep-blue: #0d2366;
+    --accent-blue: #1a3a8f;
+    --white: #ffffff;
+    --light-gray: #f8f9fa;
+    --text-gray: #6c757d;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--white);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Hero Section */
+.hero {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--deep-blue) 50%, var(--accent-blue) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(ellipse at center, transparent 0%, rgba(10, 31, 92, 0.3) 100%);
+    pointer-events: none;
+}
+
+.hero-content {
+    z-index: 1;
+    animation: fadeInUp 1.2s ease-out;
+}
+
+.logo {
+    max-width: 400px;
+    width: 80%;
+    height: auto;
+    margin-bottom: 30px;
+    border-radius: 8px;
+}
+
+.tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    letter-spacing: 4px;
+    margin-bottom: 50px;
+    opacity: 0.95;
+}
+
+.btn-primary {
+    display: inline-block;
+    padding: 18px 50px;
+    background: var(--white);
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-radius: 50px;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+/* About Section */
+.about {
+    background: var(--white);
+    color: var(--primary-blue);
+    padding: 120px 0;
+}
+
+.about-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.about-content h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 400;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+}
+
+.divider {
+    width: 60px;
+    height: 1px;
+    background: var(--primary-blue);
+    margin: 30px auto;
+    opacity: 0.4;
+}
+
+.about-content p {
+    font-size: 1.1rem;
+    font-weight: 300;
+    line-height: 2;
+    color: var(--text-gray);
+    margin-bottom: 25px;
+}
+
+/* Offer Section */
+.offer {
+    background: linear-gradient(180deg, var(--deep-blue) 0%, var(--primary-blue) 100%);
+    padding: 120px 0;
+    text-align: center;
+}
+
+.offer-content h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 400;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+}
+
+.offer .divider {
+    background: var(--white);
+}
+
+.offer-tagline {
+    font-size: 1.2rem;
+    font-weight: 300;
+    letter-spacing: 2px;
+    opacity: 0.9;
+    margin-bottom: 60px;
+}
+
+.offer-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+.offer-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 50px 30px;
+    transition: all 0.4s ease;
+}
+
+.offer-card:hover {
+    transform: translateY(-8px);
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.offer-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 8px 16px;
+    border-radius: 20px;
+    margin-bottom: 25px;
+}
+
+.offer-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+
+.offer-card p {
+    font-weight: 300;
+    opacity: 0.85;
+    letter-spacing: 1px;
+}
+
+/* Footer */
+.footer {
+    background: var(--primary-blue);
+    padding: 60px 0;
+    text-align: center;
+}
+
+.footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    letter-spacing: 8px;
+    margin-bottom: 10px;
+}
+
+.footer-tagline {
+    font-size: 0.85rem;
+    font-weight: 300;
+    letter-spacing: 3px;
+    opacity: 0.7;
+    margin-bottom: 30px;
+}
+
+.footer-copyright {
+    font-size: 0.75rem;
+    font-weight: 300;
+    opacity: 0.5;
+    letter-spacing: 1px;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .logo {
+        max-width: 300px;
+    }
+
+    .tagline {
+        font-size: 1.3rem;
+        letter-spacing: 2px;
+        padding: 0 20px;
+    }
+
+    .btn-primary {
+        padding: 15px 40px;
+        font-size: 0.85rem;
+    }
+
+    .about,
+    .offer {
+        padding: 80px 0;
+    }
+
+    .about-content h2,
+    .offer-content h2 {
+        font-size: 2.2rem;
+    }
+
+    .about-content p {
+        font-size: 1rem;
+        padding: 0 10px;
+    }
+
+    .offer-details {
+        gap: 20px;
+    }
+
+    .offer-card {
+        padding: 40px 25px;
+    }
+
+    .offer-card h3 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        max-width: 250px;
+    }
+
+    .tagline {
+        font-size: 1.1rem;
+    }
+
+    .about-content h2,
+    .offer-content h2 {
+        font-size: 1.8rem;
+        letter-spacing: 2px;
+    }
+
+    .footer-brand {
+        font-size: 1.4rem;
+        letter-spacing: 5px;
+    }
+}
