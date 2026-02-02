@@ -73,6 +73,73 @@
         }
       ],
       "ctaLink": "www.selinza.com"
+    },
+    {
+      "id": "page-1770056310941",
+      "brandName": "ddddddddddddddd",
+      "themeId": "luxury-oud",
+      "themeName": "Luxury Oud",
+      "logoPath": "/uploads/1770056302984-71755388.png",
+      "tagline": "Embrace the Essence of Power",
+      "ctaText": "Claim Your Essence",
+      "perfumeType": "luxury",
+      "aboutText": "Introducing ddddddddddddddd, where the art of perfumery meets the richness of rare Oud. Each drop is a testament to exquisite craftsmanship, designed for the discerning man who seeks to embody elegance and authority in every moment.",
+      "offerTitle": "Unlock Exclusive Elegance",
+      "offerDescription": "Experience a complimentary sample with your first purchase.",
+      "sections": [
+        {
+          "id": "hero-1770056310941",
+          "type": "hero",
+          "data": {
+            "tagline": "Embrace the Essence of Power",
+            "ctaText": "Claim Your Essence"
+          }
+        },
+        {
+          "id": "about-1770056310941",
+          "type": "about",
+          "data": {
+            "title": "The Art of Fragrance",
+            "text": "Introducing ddddddddddddddd, where the art of perfumery meets the richness of rare Oud. Each drop is a testament to exquisite craftsmanship, designed for the discerning man who seeks to embody elegance and authority in every moment."
+          }
+        },
+        {
+          "id": "features-1770056310941",
+          "type": "features",
+          "data": {
+            "items": [
+              "INSTALLMENT",
+              "3 DAYS RETURN",
+              "CASH ON DELIVERY",
+              "FAST DELIVERY"
+            ]
+          }
+        },
+        {
+          "id": "offer-1770056310941",
+          "type": "offer",
+          "data": {
+            "title": "Unlock Exclusive Elegance",
+            "description": "Experience a complimentary sample with your first purchase."
+          }
+        },
+        {
+          "id": "policy-1770056310941",
+          "type": "policy",
+          "data": {
+            "email": "info@ddddddddddddddd.com"
+          }
+        },
+        {
+          "id": "footer-1770056310941",
+          "type": "footer",
+          "data": {}
+        }
+      ],
+      "creativePrompt": "Luxury oud perfume for men.\nDark, powerful, and mysterious.\nTarget audience is confident men who value status and elegance.\nTone should be bold, premium, and authoritative.\nFocus on craftsmanship, rare ingredients, and long-lasting scent.\nCTA should feel exclusive and urgent, not salesy.",
+      "creationMode": "prompt",
+      "createdAt": "2026-02-02T18:18:30.941Z",
+      "updatedAt": "2026-02-02T18:18:30.941Z"
     }
   ]
 }
