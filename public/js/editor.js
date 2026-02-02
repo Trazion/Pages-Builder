@@ -206,7 +206,7 @@ function renderSection(section, theme, isDark, index) {
                         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 1000px; margin: 0 auto; text-align: center; color: ${isDark ? theme.colors.text : '#ffffff'};">
                             ${(section.data.items || ['INSTALLMENT', '3 DAYS RETURN', 'CASH ON DELIVERY', 'FAST DELIVERY']).map(item => `
                                 <div style="padding: 20px;">
-                                    <div style="font-size: 1.8rem; margin-bottom: 12px;">${getFeatureIcon(item)}</div>
+                                    <div style="font-size: 1.8rem; margin-bottom: 12px; opacity: 0.7;">${getFeatureIcon(item)}</div>
                                     <div style="font-size: 0.85rem; font-weight: 500; letter-spacing: 2px;">${item}</div>
                                 </div>
                             `).join('')}
