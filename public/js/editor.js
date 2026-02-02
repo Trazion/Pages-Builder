@@ -218,23 +218,37 @@ function renderSection(section, theme, isDark, index) {
                 </div>`;
 
         case 'policy':
+            const policyBg = section.data.bgColor || (isDark ? theme.colors.background : '#ffffff');
+            const policyText = section.data.textColor || (isDark ? theme.colors.text : theme.colors.textDark);
+            const policyTitle = section.data.title || 'Exchange & Return Policy';
+            const policyIntro = section.data.intro || `At ${pageData.brandName}, your satisfaction is our top priority. We allow our customers to open and inspect their orders upon delivery.`;
+            const policyConditions = section.data.conditions || ['The original box and packaging must be kept, even if the product has been opened.', 'The item must be in good condition, with all accessories and packaging included.', 'Returns are accepted within 3 days of receiving your order.'];
+            const policyRefund = section.data.refundProcess || ['Our courier will collect the return directly from your address.', 'Once the item is checked, your refund will be processed.', 'Cairo and Giza: Refund in cash on the spot when collecting the returned order.', 'Other governorates: Refund processed through shipping company.'];
+            const policyNotice = section.data.notice || 'If you receive a wrong or damaged product, please contact our customer service immediately.';
             return `
                 <div class="section-wrapper" data-index="${index}">
                     ${controls}
-                    <section class="preview-section" style="background: ${isDark ? theme.colors.background : '#ffffff'}; color: ${isDark ? theme.colors.text : theme.colors.textDark}; padding: 80px 20px;">
+                    <section class="preview-section" style="background: ${policyBg}; color: ${policyText}; padding: 80px 20px;">
                         <div style="max-width: 800px; margin: 0 auto;">
-                            <h2 style="font-size: 2rem; text-align: center; margin-bottom: 20px;">Exchange & Return Policy</h2>
+                            <h2 class="editable" data-field="title" data-section="${index}" style="font-size: 2rem; text-align: center; margin-bottom: 20px;">${policyTitle}</h2>
                             <div style="width: 60px; height: 1px; background: ${theme.colors.accent}; margin: 20px auto 40px;"></div>
-                            <p style="text-align: center; margin-bottom: 30px; opacity: 0.85;">At <strong>${pageData.brandName}</strong>, your satisfaction is our top priority.</p>
-                            <div style="margin-bottom: 30px;">
-                                <h3 style="font-size: 1.3rem; margin-bottom: 15px;">Conditions for Exchange or Return</h3>
-                                <ul style="padding-left: 20px; line-height: 2; opacity: 0.85;">
-                                    <li>Original box and packaging must be kept</li>
-                                    <li>Item must be in good condition</li>
-                                    <li>Returns accepted within 3 days</li>
+                            <p style="text-align: center; margin-bottom: 40px; opacity: 0.9; line-height: 1.8;">${policyIntro}</p>
+                            <div style="margin-bottom: 40px;">
+                                <h3 style="font-size: 1.3rem; margin-bottom: 20px;">Conditions for Exchange or Return</h3>
+                                <ul style="padding-left: 20px; line-height: 2.2; opacity: 0.9;">
+                                    ${policyConditions.map(c => `<li>${c}</li>`).join('')}
                                 </ul>
                             </div>
-                            <p style="font-size: 0.95rem;">📧 <a href="mailto:${section.data.email}" style="color: ${theme.colors.accent};">${section.data.email}</a></p>
+                            <div style="margin-bottom: 40px;">
+                                <h3 style="font-size: 1.3rem; margin-bottom: 20px;">Return & Refund Process</h3>
+                                <ul style="padding-left: 20px; line-height: 2.2; opacity: 0.9;">
+                                    ${policyRefund.map(r => `<li>${r}</li>`).join('')}
+                                </ul>
+                            </div>
+                            <div style="background: rgba(128,128,128,0.1); border: 1px solid rgba(128,128,128,0.2); border-radius: 8px; padding: 20px; margin-bottom: 30px; text-align: center;">
+                                <p style="opacity: 0.9;">${policyNotice}</p>
+                            </div>
+                            <p style="font-size: 0.95rem; text-align: center;">📧 <a href="mailto:${section.data.email}" style="color: ${theme.colors.accent};">${section.data.email}</a></p>
                         </div>
                     </section>
                 </div>`;
@@ -463,8 +477,54 @@ function editSection(index) {
         case 'policy':
             formHtml += `
                 <div class="form-group">
+                    <label>Section Title</label>
+                    <input type="text" id="edit-title" value="${section.data.title || 'Exchange & Return Policy'}">
+                </div>
+                <div class="form-group">
+                    <label>Intro Text</label>
+                    <textarea id="edit-intro">${section.data.intro || `At ${pageData.brandName}, your satisfaction is our top priority. We allow our customers to open and inspect their orders upon delivery.`}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Conditions (one per line)</label>
+                    <textarea id="edit-conditions">${(section.data.conditions || ['The original box and packaging must be kept, even if the product has been opened.', 'The item must be in good condition, with all accessories and packaging included.', 'Returns are accepted within 3 days of receiving your order.']).join('\n')}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Refund Process (one per line)</label>
+                    <textarea id="edit-refund">${(section.data.refundProcess || ['Our courier will collect the return directly from your address.', 'Once the item is checked, your refund will be processed.', 'Cairo and Giza: Refund in cash on the spot when collecting the returned order.', 'Other governorates: Refund processed through shipping company.']).join('\n')}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Notice Text</label>
+                    <input type="text" id="edit-notice" value="${section.data.notice || 'If you receive a wrong or damaged product, please contact our customer service immediately.'}">
+                </div>
+                <div class="form-group">
                     <label>Contact Email</label>
                     <input type="email" id="edit-email" value="${section.data.email || ''}">
+                </div>
+                <div class="form-group">
+                    <label>Background Color</label>
+                    <div class="color-picker-row">
+                        <input type="color" id="edit-bgcolor" value="${section.data.bgColor || '#0a1628'}">
+                        <select id="edit-bgcolor-preset">
+                            <option value="">Custom</option>
+                            <option value="#0a1628" ${section.data.bgColor === '#0a1628' ? 'selected' : ''}>Navy Dark</option>
+                            <option value="#ffffff" ${section.data.bgColor === '#ffffff' ? 'selected' : ''}>White</option>
+                            <option value="#f8f4ef" ${section.data.bgColor === '#f8f4ef' ? 'selected' : ''}>Cream</option>
+                            <option value="#1a1a2e" ${section.data.bgColor === '#1a1a2e' ? 'selected' : ''}>Deep Purple</option>
+                            <option value="#2d2d2d" ${section.data.bgColor === '#2d2d2d' ? 'selected' : ''}>Dark Gray</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Text Color</label>
+                    <div class="color-picker-row">
+                        <input type="color" id="edit-textcolor" value="${section.data.textColor || '#f8f4ef'}">
+                        <select id="edit-textcolor-preset">
+                            <option value="">Custom</option>
+                            <option value="#f8f4ef" ${section.data.textColor === '#f8f4ef' ? 'selected' : ''}>Light</option>
+                            <option value="#1a1a2e" ${section.data.textColor === '#1a1a2e' ? 'selected' : ''}>Dark</option>
+                            <option value="#333333" ${section.data.textColor === '#333333' ? 'selected' : ''}>Charcoal</option>
+                        </select>
+                    </div>
                 </div>
             `;
             break;
@@ -487,6 +547,37 @@ function editSection(index) {
 
     document.getElementById('modal-body').innerHTML = formHtml;
     document.getElementById('edit-modal').classList.remove('hidden');
+
+    setupColorPickerSync();
+}
+
+function setupColorPickerSync() {
+    const bgPreset = document.getElementById('edit-bgcolor-preset');
+    const bgColor = document.getElementById('edit-bgcolor');
+    const textPreset = document.getElementById('edit-textcolor-preset');
+    const textColor = document.getElementById('edit-textcolor');
+
+    if (bgPreset && bgColor) {
+        bgPreset.addEventListener('change', function() {
+            if (this.value) {
+                bgColor.value = this.value;
+            }
+        });
+        bgColor.addEventListener('input', function() {
+            bgPreset.value = '';
+        });
+    }
+
+    if (textPreset && textColor) {
+        textPreset.addEventListener('change', function() {
+            if (this.value) {
+                textColor.value = this.value;
+            }
+        });
+        textColor.addEventListener('input', function() {
+            textPreset.value = '';
+        });
+    }
 }
 
 function closeModal() {
@@ -521,7 +612,16 @@ function saveModal() {
             break;
 
         case 'policy':
+            section.data.title = document.getElementById('edit-title')?.value || 'Exchange & Return Policy';
+            section.data.intro = document.getElementById('edit-intro')?.value || '';
+            const conditions = document.getElementById('edit-conditions')?.value || '';
+            section.data.conditions = conditions.split('\n').filter(i => i.trim());
+            const refund = document.getElementById('edit-refund')?.value || '';
+            section.data.refundProcess = refund.split('\n').filter(i => i.trim());
+            section.data.notice = document.getElementById('edit-notice')?.value || '';
             section.data.email = document.getElementById('edit-email')?.value || '';
+            section.data.bgColor = document.getElementById('edit-bgcolor')?.value || '';
+            section.data.textColor = document.getElementById('edit-textcolor')?.value || '';
             break;
 
         case 'cta':

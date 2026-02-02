@@ -820,29 +820,35 @@ function generateSectionHtml(section, pageData, theme, isDark) {
     </section>`;
 
         case 'policy':
+            const policyBg = section.data.bgColor || (isDark ? 'var(--background)' : '#ffffff');
+            const policyTextColor = section.data.textColor || (isDark ? 'var(--text)' : 'var(--text-dark)');
+            const policyTitle = section.data.title || 'Exchange & Return Policy';
+            const policyIntro = section.data.intro || `At ${pageData.brandName}, your satisfaction is our top priority. We allow our customers to open and inspect their orders upon delivery.`;
+            const policyConditions = section.data.conditions || ['The original box and packaging must be kept, even if the product has been opened.', 'The item must be in good condition, with all accessories and packaging included.', 'Returns are accepted within 3 days of receiving your order.'];
+            const policyRefund = section.data.refundProcess || ['Our courier will collect the return directly from your address.', 'Once the item is checked, your refund will be processed.', 'Cairo and Giza: Refund in cash on the spot when collecting the returned order.', 'Other governorates: Refund processed through shipping company.'];
+            const policyNotice = section.data.notice || 'If you receive a wrong or damaged product, please contact our customer service immediately.';
             return `
-    <section style="background: ${isDark ? 'var(--background)' : '#ffffff'}; color: ${isDark ? 'var(--text)' : 'var(--text-dark)'}; padding: 100px 20px;">
+    <section style="background: ${policyBg}; color: ${policyTextColor}; padding: 100px 20px;">
         <div class="container fade-in" style="max-width: 900px;">
-            <h2 style="font-size: 2.5rem; text-align: center; margin-bottom: 20px;">Exchange & Return Policy</h2>
+            <h2 style="font-size: 2.5rem; text-align: center; margin-bottom: 20px;">${policyTitle}</h2>
             <div style="width: 60px; height: 1px; background: var(--accent); margin: 30px auto 40px;"></div>
-            <p style="text-align: center; margin-bottom: 40px; opacity: 0.85;">At <strong>${pageData.brandName}</strong>, your satisfaction is our top priority.</p>
+            <p style="text-align: center; margin-bottom: 40px; opacity: 0.9; line-height: 1.8;">${policyIntro}</p>
             <div style="margin-bottom: 40px;">
                 <h3 style="font-size: 1.5rem; margin-bottom: 20px;">Conditions for Exchange or Return</h3>
-                <ul style="padding-left: 20px; line-height: 2; opacity: 0.85;">
-                    <li>The original box and packaging must be kept</li>
-                    <li>The item must be in good condition</li>
-                    <li>Returns are accepted within 3 days</li>
+                <ul style="padding-left: 20px; line-height: 2.2; opacity: 0.9;">
+                    ${policyConditions.map(c => `<li>${c}</li>`).join('')}
                 </ul>
             </div>
             <div style="margin-bottom: 40px;">
                 <h3 style="font-size: 1.5rem; margin-bottom: 20px;">Return & Refund Process</h3>
-                <ul style="padding-left: 20px; line-height: 2; opacity: 0.85;">
-                    <li>Our courier will collect the return from your address</li>
-                    <li>Cairo and Giza: Refund in cash on the spot</li>
-                    <li>Other governorates: Refund through shipping company</li>
+                <ul style="padding-left: 20px; line-height: 2.2; opacity: 0.9;">
+                    ${policyRefund.map(r => `<li>${r}</li>`).join('')}
                 </ul>
             </div>
-            <p style="font-size: 1rem;">📧 <a href="mailto:${section.data.email || 'info@' + pageData.brandName.toLowerCase().replace(/\\s+/g, '') + '.com'}" style="color: var(--accent);">${section.data.email || 'info@' + pageData.brandName.toLowerCase().replace(/\\s+/g, '') + '.com'}</a></p>
+            <div style="background: rgba(128,128,128,0.1); border: 1px solid rgba(128,128,128,0.2); border-radius: 8px; padding: 20px; margin-bottom: 30px; text-align: center;">
+                <p style="opacity: 0.9;">${policyNotice}</p>
+            </div>
+            <p style="font-size: 1rem; text-align: center;">📧 <a href="mailto:${section.data.email || 'info@' + pageData.brandName.toLowerCase().replace(/\\s+/g, '') + '.com'}" style="color: var(--accent);">${section.data.email || 'info@' + pageData.brandName.toLowerCase().replace(/\\s+/g, '') + '.com'}</a></p>
         </div>
     </section>`;
 
