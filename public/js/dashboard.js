@@ -370,11 +370,17 @@ async function handleAICopy() {
 
 async function handleCreatePage(e) {
     e.preventDefault();
+    console.log('handleCreatePage called, currentMode:', currentMode);
 
-    if (currentMode === 'prompt') {
-        await handlePromptModeCreate();
-    } else {
-        await handleStandardModeCreate();
+    try {
+        if (currentMode === 'prompt') {
+            await handlePromptModeCreate();
+        } else {
+            await handleStandardModeCreate();
+        }
+    } catch (error) {
+        console.error('Error in handleCreatePage:', error);
+        showToast('An error occurred: ' + error.message, 'error');
     }
 }
 
@@ -419,24 +425,28 @@ async function handleStandardModeCreate() {
 }
 
 async function handlePromptModeCreate() {
-    const brandName = document.getElementById('prompt-brand-name').value.trim();
-    const prompt = document.getElementById('creative-prompt').value.trim();
+    const brandNameInput = document.getElementById('prompt-brand-name');
+    const promptInput = document.getElementById('creative-prompt');
+    const brandName = brandNameInput.value.trim();
+    const prompt = promptInput.value.trim();
 
     console.log('Prompt mode create:', { brandName, prompt, promptSelectedTheme });
 
     if (!brandName) {
         showToast('Please enter a brand name', 'error');
-        console.log('Validation failed: no brand name');
+        brandNameInput.focus();
+        brandNameInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
     }
     if (!promptSelectedTheme) {
-        showToast('Please select a theme below', 'error');
-        console.log('Validation failed: no theme selected');
+        showToast('Please select a theme', 'error');
+        document.getElementById('prompt-themes-grid').scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
     }
     if (!prompt) {
         showToast('Please describe your landing page vision', 'error');
-        console.log('Validation failed: no prompt');
+        promptInput.focus();
+        promptInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
     }
 
