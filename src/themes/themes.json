@@ -1,0 +1,194 @@
+{
+  "themes": [
+    {
+      "id": "luxury-oud",
+      "name": "Luxury Oud",
+      "mood": ["dark", "luxury", "arabic", "oriental"],
+      "colors": {
+        "primary": "#0b1c2d",
+        "secondary": "#1a2f45",
+        "accent": "#c9a24d",
+        "text": "#ffffff",
+        "textDark": "#333333",
+        "background": "#0b1c2d"
+      },
+      "font": "Playfair Display",
+      "fontBody": "Montserrat",
+      "sections": ["hero", "about", "features", "offer", "policy", "footer"],
+      "animation": "fade",
+      "buttonStyle": "rounded",
+      "heroStyle": "centered"
+    },
+    {
+      "id": "floral-soft",
+      "name": "Floral Soft",
+      "mood": ["feminine", "soft", "romantic", "floral"],
+      "colors": {
+        "primary": "#f8e8ee",
+        "secondary": "#fdf2f5",
+        "accent": "#d4a5b9",
+        "text": "#5c4550",
+        "textDark": "#3d2d35",
+        "background": "#ffffff"
+      },
+      "font": "Cormorant Garamond",
+      "fontBody": "Lato",
+      "sections": ["hero", "about", "features", "offer", "policy", "footer"],
+      "animation": "slide",
+      "buttonStyle": "pill",
+      "heroStyle": "centered"
+    },
+    {
+      "id": "fresh-citrus",
+      "name": "Fresh Citrus",
+      "mood": ["fresh", "energetic", "citrus", "summer"],
+      "colors": {
+        "primary": "#fff8e7",
+        "secondary": "#fffdf5",
+        "accent": "#f5a623",
+        "text": "#2d3436",
+        "textDark": "#1a1a1a",
+        "background": "#ffffff"
+      },
+      "font": "Josefin Sans",
+      "fontBody": "Open Sans",
+      "sections": ["hero", "about", "features", "offer", "policy", "footer"],
+      "animation": "fade",
+      "buttonStyle": "rounded",
+      "heroStyle": "centered"
+    },
+    {
+      "id": "sensual-night",
+      "name": "Sensual Night",
+      "mood": ["sensual", "mysterious", "night", "seductive"],
+      "colors": {
+        "primary": "#1a0a1f",
+        "secondary": "#2d1435",
+        "accent": "#9b59b6",
+        "text": "#ffffff",
+        "textDark": "#333333",
+        "background": "#1a0a1f"
+      },
+      "font": "Cinzel",
+      "fontBody": "Raleway",
+      "sections": ["hero", "about", "features", "offer", "policy", "footer"],
+      "animation": "fade",
+      "buttonStyle": "sharp",
+      "heroStyle": "centered"
+    },
+    {
+      "id": "minimal-white",
+      "name": "Minimal White",
+      "mood": ["clean", "minimal", "modern", "pure"],
+      "colors": {
+        "primary": "#ffffff",
+        "secondary": "#f9f9f9",
+        "accent": "#000000",
+        "text": "#333333",
+        "textDark": "#000000",
+        "background": "#ffffff"
+      },
+      "font": "Helvetica Neue",
+      "fontBody": "Helvetica Neue",
+      "sections": ["hero", "about", "features", "offer", "policy", "footer"],
+      "animation": "fade",
+      "buttonStyle": "sharp",
+      "heroStyle": "centered"
+    },
+    {
+      "id": "dark-masculine",
+      "name": "Dark Masculine",
+      "mood": ["masculine", "bold", "strong", "powerful"],
+      "colors": {
+        "primary": "#1c1c1c",
+        "secondary": "#2a2a2a",
+        "accent": "#8b0000",
+        "text": "#ffffff",
+        "textDark": "#333333",
+        "background": "#1c1c1c"
+      },
+      "font": "Bebas Neue",
+      "fontBody": "Roboto",
+      "sections": ["hero", "about", "features", "offer", "policy", "footer"],
+      "animation": "slide",
+      "buttonStyle": "sharp",
+      "heroStyle": "centered"
+    },
+    {
+      "id": "feminine-rose",
+      "name": "Feminine Rose",
+      "mood": ["feminine", "elegant", "rose", "romantic"],
+      "colors": {
+        "primary": "#fff0f3",
+        "secondary": "#ffe4e9",
+        "accent": "#e91e63",
+        "text": "#4a2c37",
+        "textDark": "#2d1a22",
+        "background": "#ffffff"
+      },
+      "font": "Dancing Script",
+      "fontBody": "Poppins",
+      "sections": ["hero", "about", "features", "offer", "policy", "footer"],
+      "animation": "fade",
+      "buttonStyle": "pill",
+      "heroStyle": "centered"
+    },
+    {
+      "id": "modern-luxury",
+      "name": "Modern Luxury",
+      "mood": ["modern", "luxury", "sophisticated", "premium"],
+      "colors": {
+        "primary": "#0a1f5c",
+        "secondary": "#0d2366",
+        "accent": "#ffffff",
+        "text": "#ffffff",
+        "textDark": "#333333",
+        "background": "#0a1f5c"
+      },
+      "font": "Cormorant Garamond",
+      "fontBody": "Montserrat",
+      "sections": ["hero", "about", "features", "offer", "policy", "footer"],
+      "animation": "fade",
+      "buttonStyle": "rounded",
+      "heroStyle": "centered"
+    },
+    {
+      "id": "oriental-gold",
+      "name": "Oriental Gold",
+      "mood": ["oriental", "rich", "opulent", "exotic"],
+      "colors": {
+        "primary": "#1a0f00",
+        "secondary": "#2d1a00",
+        "accent": "#d4af37",
+        "text": "#ffffff",
+        "textDark": "#333333",
+        "background": "#1a0f00"
+      },
+      "font": "Cinzel Decorative",
+      "fontBody": "EB Garamond",
+      "sections": ["hero", "about", "features", "offer", "policy", "footer"],
+      "animation": "fade",
+      "buttonStyle": "rounded",
+      "heroStyle": "centered"
+    },
+    {
+      "id": "clean-fresh",
+      "name": "Clean Fresh",
+      "mood": ["clean", "fresh", "aquatic", "light"],
+      "colors": {
+        "primary": "#e8f4f8",
+        "secondary": "#f5fbfc",
+        "accent": "#0097a7",
+        "text": "#37474f",
+        "textDark": "#263238",
+        "background": "#ffffff"
+      },
+      "font": "Quicksand",
+      "fontBody": "Nunito",
+      "sections": ["hero", "about", "features", "offer", "policy", "footer"],
+      "animation": "slide",
+      "buttonStyle": "pill",
+      "heroStyle": "centered"
+    }
+  ]
+}

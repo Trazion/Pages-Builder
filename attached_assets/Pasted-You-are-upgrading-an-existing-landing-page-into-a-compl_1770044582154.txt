@@ -1,0 +1,181 @@
+You are upgrading an existing landing page into a complete
+Landing Page Builder System specialized for perfume brands.
+
+IMPORTANT:
+- DO NOT delete or overwrite generated landing pages.
+- Every generated landing page must be SAVED and MANAGED inside a Pages section.
+
+This is a real system, not a demo.
+
+--------------------------------------------------
+PROJECT GOAL
+--------------------------------------------------
+Build a perfume-focused Landing Page Builder that allows:
+- Creating multiple landing pages
+- Saving each page permanently
+- Managing pages (view, edit, duplicate, delete)
+- Using professional perfume-themed templates (themes)
+- Uploading brand logos
+- AI-assisted theme and content selection
+
+--------------------------------------------------
+CORE SYSTEM MODULES
+--------------------------------------------------
+
+1) THEME ENGINE
+- Create a deterministic theme engine (no random layouts)
+- Themes are perfume-specific only
+
+Each theme must include:
+- Color palette
+- Font family
+- Section structure
+- Button styles
+- Animation style
+
+Use a JSON-based schema like:
+{
+  "id": "luxury-oud",
+  "name": "Luxury Oud",
+  "mood": ["dark", "luxury", "arabic"],
+  "colors": {
+    "primary": "#0b1c2d",
+    "accent": "#c9a24d"
+  },
+  "font": "Playfair Display",
+  "sections": ["hero", "about", "offer", "cta"],
+  "animation": "fade"
+}
+
+--------------------------------------------------
+
+2) THEME LIBRARY
+- Build an internal Theme Library (minimum 10 themes)
+- All themes must be:
+  - Elegant
+  - Premium
+  - Perfume-inspired
+- Example theme categories:
+  - Luxury Oud
+  - Floral Soft
+  - Fresh Citrus
+  - Sensual Night
+  - Minimal White
+  - Dark Masculine
+  - Feminine Rose
+  - Modern Luxury
+  - Oriental Gold
+  - Clean Fresh
+
+--------------------------------------------------
+
+3) PAGE GENERATION ENGINE
+- User can create a new landing page by entering:
+  - Brand name
+  - Upload brand logo (image upload required)
+  - Perfume type or mood
+  - CTA text (default: "Get Offer")
+
+- System generates a landing page using:
+  - Selected theme
+  - Uploaded logo
+  - Brand name
+  - Optimized perfume-related content
+  - CTA button
+
+--------------------------------------------------
+
+4) LOGO UPLOAD SYSTEM
+- Allow uploading a logo image (PNG/JPG/SVG)
+- Store uploaded logos locally in the project
+- Associate each logo with its landing page
+- Display the logo in the hero section of the generated page
+
+--------------------------------------------------
+
+5) AI ASSISTANCE LAYER
+AI MUST NOT design layouts.
+
+AI is used ONLY for:
+- Selecting the best theme based on perfume type
+- Generating elegant perfume-related copy
+- Adjusting tone (luxury, fresh, sensual)
+- Suggesting CTA wording
+- Minor color refinements within theme limits
+
+--------------------------------------------------
+
+6) PAGES MANAGEMENT SYSTEM (CRITICAL)
+Create a dedicated Pages section.
+
+Pages features:
+- Every generated landing page must be SAVED
+- Each page has:
+  - Unique ID
+  - Name
+  - Selected theme
+  - Brand data
+  - Logo reference
+  - Creation date
+
+Pages actions:
+- View page
+- Live preview
+- Edit page
+- Duplicate page
+- Delete page
+
+DO NOT overwrite existing pages.
+DO NOT auto-replace pages.
+
+--------------------------------------------------
+
+7) DASHBOARD UI
+Build a clean internal dashboard with:
+- Sidebar navigation:
+  - Themes
+  - Pages
+  - Create New Page
+- Form for brand input and logo upload
+- Theme selector
+- Generate button
+- Live preview panel
+
+UI style:
+- Luxury
+- Minimal
+- Perfume-industry focused
+
+--------------------------------------------------
+
+8) OUTPUT & STORAGE
+- Generated pages must be:
+  - Saved as individual HTML/CSS/JS files
+  - Stored inside a /pages directory
+- Pages must be reusable and editable later
+- Fully responsive
+- Ready for deployment
+
+--------------------------------------------------
+
+9) TECH STACK
+- HTML
+- CSS
+- Vanilla JavaScript
+- Node.js + Express
+- No React
+- No Tailwind
+- Modular folder structure
+- Clean maintainable code
+
+--------------------------------------------------
+
+FINAL RESULT
+--------------------------------------------------
+A professional perfume-focused Landing Page Builder system with:
+- Theme engine
+- Logo upload
+- AI-assisted customization
+- Page saving & management
+- Dashboard interface
+- Scalable architecture
