@@ -117,18 +117,34 @@ app.post('/api/pages', (req, res) => {
     const pageId = 'page-' + Date.now();
     const createdAt = new Date().toISOString();
 
+    const finalTagline = tagline || 'Luxury Scents. Timeless Elegance.';
+    const finalCtaText = ctaText || 'Get Offer';
+    const finalAboutText = aboutText || generateAboutText(brandName);
+    const finalOfferTitle = offerTitle || 'Exclusive Offer';
+    const finalOfferDescription = offerDescription || 'Discover your signature scent with our exclusive collection.';
+
+    const defaultSections = [
+        { id: 'hero-' + Date.now(), type: 'hero', data: { tagline: finalTagline, ctaText: finalCtaText } },
+        { id: 'about-' + Date.now(), type: 'about', data: { title: 'The Art of Fragrance', text: finalAboutText } },
+        { id: 'features-' + Date.now(), type: 'features', data: { items: ['INSTALLMENT', '3 DAYS RETURN', 'CASH ON DELIVERY', 'FAST DELIVERY'] } },
+        { id: 'offer-' + Date.now(), type: 'offer', data: { title: finalOfferTitle, description: finalOfferDescription } },
+        { id: 'policy-' + Date.now(), type: 'policy', data: { email: `info@${brandName.toLowerCase().replace(/\\s+/g, '')}.com` } },
+        { id: 'footer-' + Date.now(), type: 'footer', data: {} }
+    ];
+
     const pageData = {
         id: pageId,
         brandName,
         themeId,
         themeName: theme.name,
         logoPath: logoPath || null,
-        tagline: tagline || 'Luxury Scents. Timeless Elegance.',
-        ctaText: ctaText || 'Get Offer',
+        tagline: finalTagline,
+        ctaText: finalCtaText,
         perfumeType: perfumeType || 'luxury',
-        aboutText: aboutText || generateAboutText(brandName),
-        offerTitle: offerTitle || 'Exclusive Offer',
-        offerDescription: offerDescription || 'Discover your signature scent with our exclusive collection.',
+        aboutText: finalAboutText,
+        offerTitle: finalOfferTitle,
+        offerDescription: finalOfferDescription,
+        sections: defaultSections,
         createdAt,
         updatedAt: createdAt
     };
@@ -138,7 +154,7 @@ app.post('/api/pages', (req, res) => {
         fs.mkdirSync(generatedDir, { recursive: true });
     }
 
-    const htmlContent = generateLandingPage(pageData, theme);
+    const htmlContent = generateLandingPageWithSections(pageData, theme);
     fs.writeFileSync(path.join(generatedDir, `${pageId}.html`), htmlContent);
 
     const pagesData = loadPages();
@@ -149,7 +165,7 @@ app.post('/api/pages', (req, res) => {
 });
 
 app.put('/api/pages/:id', (req, res) => {
-    const { brandName, themeId, logoPath, tagline, ctaText, perfumeType, aboutText, offerTitle, offerDescription } = req.body;
+    const { brandName, themeId, logoPath, tagline, ctaText, perfumeType, aboutText, offerTitle, offerDescription, sections } = req.body;
 
     const pagesData = loadPages();
     const pageIndex = pagesData.pages.findIndex(p => p.id === req.params.id);
@@ -178,11 +194,12 @@ app.put('/api/pages/:id', (req, res) => {
         aboutText: aboutText || pagesData.pages[pageIndex].aboutText,
         offerTitle: offerTitle || pagesData.pages[pageIndex].offerTitle,
         offerDescription: offerDescription || pagesData.pages[pageIndex].offerDescription,
+        sections: sections || pagesData.pages[pageIndex].sections,
         updatedAt: new Date().toISOString()
     };
 
     const generatedDir = path.join(__dirname, 'src/pages/generated');
-    const htmlContent = generateLandingPage(pagesData.pages[pageIndex], theme);
+    const htmlContent = generateLandingPageWithSections(pagesData.pages[pageIndex], theme);
     fs.writeFileSync(path.join(generatedDir, `${req.params.id}.html`), htmlContent);
 
     savePages(pagesData);
@@ -198,10 +215,13 @@ app.post('/api/pages/:id/duplicate', (req, res) => {
     }
 
     const newPageId = 'page-' + Date.now();
+    const copiedSections = originalPage.sections ? JSON.parse(JSON.stringify(originalPage.sections)) : null;
+
     const newPage = {
         ...originalPage,
         id: newPageId,
         brandName: originalPage.brandName + ' (Copy)',
+        sections: copiedSections,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
     };
@@ -210,7 +230,7 @@ app.post('/api/pages/:id/duplicate', (req, res) => {
     const theme = themesData.themes.find(t => t.id === newPage.themeId);
 
     const generatedDir = path.join(__dirname, 'src/pages/generated');
-    const htmlContent = generateLandingPage(newPage, theme);
+    const htmlContent = generateLandingPageWithSections(newPage, theme);
     fs.writeFileSync(path.join(generatedDir, `${newPageId}.html`), htmlContent);
 
     pagesData.pages.push(newPage);
@@ -651,6 +671,250 @@ function generateLandingPage(pageData, theme) {
     </script>
 </body>
 </html>`;
+}
+
+function generateLandingPageWithSections(pageData, theme) {
+    const isDark = ['luxury-oud', 'sensual-night', 'dark-masculine', 'modern-luxury', 'oriental-gold'].includes(theme.id);
+    const sections = pageData.sections || [];
+
+    if (sections.length === 0) {
+        return generateLandingPage(pageData, theme);
+    }
+
+    let sectionsHtml = '';
+    sections.forEach(section => {
+        sectionsHtml += generateSectionHtml(section, pageData, theme, isDark);
+    });
+
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${pageData.brandName} | Luxury Perfumes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=${encodeURIComponent(theme.font)}:wght@300;400;500;600;700&family=${encodeURIComponent(theme.fontBody)}:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: ${theme.colors.primary};
+            --secondary: ${theme.colors.secondary};
+            --accent: ${theme.colors.accent};
+            --text: ${theme.colors.text};
+            --text-dark: ${theme.colors.textDark};
+            --background: ${theme.colors.background};
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: '${theme.fontBody}', sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        h1, h2, h3 { font-family: '${theme.font}', serif; }
+        .btn-primary {
+            display: inline-block;
+            padding: 18px 50px;
+            background: ${isDark ? 'var(--accent)' : 'var(--accent)'};
+            color: ${isDark ? 'var(--primary)' : '#ffffff'};
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: ${theme.buttonStyle === 'pill' ? '50px' : theme.buttonStyle === 'sharp' ? '0' : '8px'};
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.25); }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        @media (max-width: 768px) {
+            .features-grid { grid-template-columns: repeat(2, 1fr) !important; }
+            .offer-grid { grid-template-columns: 1fr !important; }
+        }
+    </style>
+</head>
+<body>
+${sectionsHtml}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+            fadeElements.forEach(function(el) { observer.observe(el); });
+        });
+    </script>
+</body>
+</html>`;
+}
+
+function generateSectionHtml(section, pageData, theme, isDark) {
+    switch (section.type) {
+        case 'hero':
+            return `
+    <section style="min-height: 100vh; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); display: flex; align-items: center; justify-content: center; text-align: center; padding: 60px 20px;">
+        <div class="fade-in">
+            ${pageData.logoPath ? `<img src="${pageData.logoPath}" alt="${pageData.brandName}" style="max-width: 350px; width: 80%; margin-bottom: 30px; border-radius: 8px;">` : `<h1 style="color: var(--accent); font-size: 4rem; letter-spacing: 8px; margin-bottom: 20px;">${pageData.brandName.toUpperCase()}</h1>`}
+            <p style="color: ${isDark ? 'var(--text)' : 'var(--text-dark)'}; font-size: 1.5rem; letter-spacing: 4px; margin-bottom: 50px; opacity: 0.9;">${section.data.tagline || pageData.tagline}</p>
+            <a href="#offer" class="btn-primary">${section.data.ctaText || pageData.ctaText}</a>
+        </div>
+    </section>`;
+
+        case 'about':
+            return `
+    <section style="background: ${isDark ? 'var(--background)' : '#ffffff'}; color: ${isDark ? 'var(--text)' : 'var(--text-dark)'}; padding: 120px 20px;">
+        <div class="container fade-in" style="max-width: 800px; text-align: center;">
+            <h2 style="font-size: 2.8rem; letter-spacing: 3px; margin-bottom: 20px;">${section.data.title || 'The Art of Fragrance'}</h2>
+            <div style="width: 60px; height: 1px; background: var(--accent); margin: 30px auto; opacity: 0.6;"></div>
+            <p style="font-size: 1.1rem; line-height: 2; opacity: 0.85;">${section.data.text || pageData.aboutText}</p>
+        </div>
+    </section>`;
+
+        case 'features':
+            const items = section.data.items || ['INSTALLMENT', '3 DAYS RETURN', 'CASH ON DELIVERY', 'FAST DELIVERY'];
+            return `
+    <section style="background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%); padding: 60px 20px;">
+        <div class="container">
+            <div class="features-grid" style="display: grid; grid-template-columns: repeat(${items.length}, 1fr); gap: 30px; text-align: center; color: ${isDark ? 'var(--text)' : '#ffffff'};">
+                ${items.map(item => `<div class="fade-in" style="padding: 20px;"><span style="font-size: 0.85rem; font-weight: 500; letter-spacing: 2px;">${item}</span></div>`).join('')}
+            </div>
+        </div>
+    </section>`;
+
+        case 'offer':
+            return `
+    <section id="offer" style="background: linear-gradient(180deg, var(--secondary) 0%, var(--primary) 100%); padding: 120px 20px; text-align: center; color: ${isDark ? 'var(--text)' : '#ffffff'};">
+        <div class="container fade-in">
+            <h2 style="font-size: 2.8rem; letter-spacing: 3px; margin-bottom: 20px;">${section.data.title || 'Exclusive Offer'}</h2>
+            <div style="width: 60px; height: 1px; background: ${isDark ? 'var(--accent)' : '#ffffff'}; margin: 30px auto;"></div>
+            <p style="font-size: 1.2rem; opacity: 0.9; margin-bottom: 60px;">${section.data.description || 'Discover your signature scent'}</p>
+            <div class="offer-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 900px; margin: 0 auto 60px;">
+                <div style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; padding: 50px 30px;">
+                    <span style="display: inline-block; font-size: 0.7rem; background: rgba(255,255,255,0.15); padding: 8px 16px; border-radius: 20px; margin-bottom: 25px;">Limited Time</span>
+                    <h3 style="font-size: 2.2rem; margin-bottom: 10px;">20% Off</h3>
+                    <p style="opacity: 0.85;">On your first purchase</p>
+                </div>
+                <div style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; padding: 50px 30px;">
+                    <span style="display: inline-block; font-size: 0.7rem; background: rgba(255,255,255,0.15); padding: 8px 16px; border-radius: 20px; margin-bottom: 25px;">Exclusive</span>
+                    <h3 style="font-size: 2.2rem; margin-bottom: 10px;">Free Gift</h3>
+                    <p style="opacity: 0.85;">With orders over $150</p>
+                </div>
+                <div style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; padding: 50px 30px;">
+                    <span style="display: inline-block; font-size: 0.7rem; background: rgba(255,255,255,0.15); padding: 8px 16px; border-radius: 20px; margin-bottom: 25px;">Members Only</span>
+                    <h3 style="font-size: 2.2rem; margin-bottom: 10px;">VIP Access</h3>
+                    <p style="opacity: 0.85;">Early collection previews</p>
+                </div>
+            </div>
+            <a href="#" class="btn-primary">${pageData.ctaText}</a>
+        </div>
+    </section>`;
+
+        case 'policy':
+            return `
+    <section style="background: ${isDark ? 'var(--background)' : '#ffffff'}; color: ${isDark ? 'var(--text)' : 'var(--text-dark)'}; padding: 100px 20px;">
+        <div class="container fade-in" style="max-width: 900px;">
+            <h2 style="font-size: 2.5rem; text-align: center; margin-bottom: 20px;">Exchange & Return Policy</h2>
+            <div style="width: 60px; height: 1px; background: var(--accent); margin: 30px auto 40px;"></div>
+            <p style="text-align: center; margin-bottom: 40px; opacity: 0.85;">At <strong>${pageData.brandName}</strong>, your satisfaction is our top priority.</p>
+            <div style="margin-bottom: 40px;">
+                <h3 style="font-size: 1.5rem; margin-bottom: 20px;">Conditions for Exchange or Return</h3>
+                <ul style="padding-left: 20px; line-height: 2; opacity: 0.85;">
+                    <li>The original box and packaging must be kept</li>
+                    <li>The item must be in good condition</li>
+                    <li>Returns are accepted within 3 days</li>
+                </ul>
+            </div>
+            <div style="margin-bottom: 40px;">
+                <h3 style="font-size: 1.5rem; margin-bottom: 20px;">Return & Refund Process</h3>
+                <ul style="padding-left: 20px; line-height: 2; opacity: 0.85;">
+                    <li>Our courier will collect the return from your address</li>
+                    <li>Cairo and Giza: Refund in cash on the spot</li>
+                    <li>Other governorates: Refund through shipping company</li>
+                </ul>
+            </div>
+            <p style="font-size: 1rem;">📧 <a href="mailto:${section.data.email || 'info@' + pageData.brandName.toLowerCase().replace(/\\s+/g, '') + '.com'}" style="color: var(--accent);">${section.data.email || 'info@' + pageData.brandName.toLowerCase().replace(/\\s+/g, '') + '.com'}</a></p>
+        </div>
+    </section>`;
+
+        case 'footer':
+            return `
+    <footer style="background: var(--primary); color: ${isDark ? 'var(--text)' : '#ffffff'}; padding: 60px 20px; text-align: center;">
+        <p style="font-size: 1.8rem; letter-spacing: 8px; margin-bottom: 10px;">${pageData.brandName.toUpperCase()}</p>
+        <p style="font-size: 0.85rem; opacity: 0.7; letter-spacing: 3px; margin-bottom: 30px;">Luxury Perfumes</p>
+        <p style="font-size: 0.75rem; opacity: 0.5;">© ${new Date().getFullYear()} ${pageData.brandName}. All rights reserved.</p>
+    </footer>`;
+
+        case 'gallery':
+            return `
+    <section style="background: ${isDark ? 'var(--background)' : '#ffffff'}; padding: 100px 20px; text-align: center;">
+        <div class="container fade-in">
+            <h2 style="color: ${isDark ? 'var(--text)' : 'var(--text-dark)'}; font-size: 2.5rem; margin-bottom: 40px;">Gallery</h2>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 900px; margin: 0 auto;">
+                <div style="background: var(--secondary); height: 200px; border-radius: 8px;"></div>
+                <div style="background: var(--secondary); height: 200px; border-radius: 8px;"></div>
+                <div style="background: var(--secondary); height: 200px; border-radius: 8px;"></div>
+            </div>
+        </div>
+    </section>`;
+
+        case 'testimonials':
+            return `
+    <section style="background: ${isDark ? 'var(--secondary)' : '#f9f9f9'}; padding: 100px 20px; text-align: center;">
+        <div class="container fade-in">
+            <h2 style="color: ${isDark ? 'var(--text)' : 'var(--text-dark)'}; font-size: 2.5rem; margin-bottom: 40px;">What Our Customers Say</h2>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; max-width: 800px; margin: 0 auto;">
+                <div style="background: ${isDark ? 'rgba(255,255,255,0.05)' : '#ffffff'}; padding: 30px; border-radius: 12px; text-align: left;">
+                    <p style="color: ${isDark ? 'var(--text)' : 'var(--text-dark)'}; font-style: italic; margin-bottom: 15px;">"Absolutely stunning fragrance. I get compliments everywhere I go!"</p>
+                    <p style="color: var(--accent); font-weight: 500;">— Sarah M.</p>
+                </div>
+                <div style="background: ${isDark ? 'rgba(255,255,255,0.05)' : '#ffffff'}; padding: 30px; border-radius: 12px; text-align: left;">
+                    <p style="color: ${isDark ? 'var(--text)' : 'var(--text-dark)'}; font-style: italic; margin-bottom: 15px;">"The quality is exceptional. Worth every penny!"</p>
+                    <p style="color: var(--accent); font-weight: 500;">— Ahmed K.</p>
+                </div>
+            </div>
+        </div>
+    </section>`;
+
+        case 'contact':
+            return `
+    <section style="background: ${isDark ? 'var(--background)' : '#ffffff'}; padding: 100px 20px; text-align: center;">
+        <div class="container fade-in">
+            <h2 style="color: ${isDark ? 'var(--text)' : 'var(--text-dark)'}; font-size: 2.5rem; margin-bottom: 40px;">Contact Us</h2>
+            <p style="color: ${isDark ? 'var(--text)' : 'var(--text-dark)'}; margin-bottom: 20px; opacity: 0.85;">Have questions? We'd love to hear from you.</p>
+            <p style="font-size: 1.1rem;">📧 <a href="mailto:info@${pageData.brandName.toLowerCase().replace(/\\s+/g, '')}.com" style="color: var(--accent);">info@${pageData.brandName.toLowerCase().replace(/\\s+/g, '')}.com</a></p>
+        </div>
+    </section>`;
+
+        case 'cta':
+            return `
+    <section style="background: var(--accent); padding: 80px 20px; text-align: center;">
+        <div class="container fade-in">
+            <h2 style="color: var(--primary); font-size: 2.5rem; margin-bottom: 30px;">${section.data.title || 'Ready to Experience Luxury?'}</h2>
+            <a href="#" style="display: inline-block; padding: 18px 50px; background: var(--primary); color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 500; letter-spacing: 2px;">${pageData.ctaText}</a>
+        </div>
+    </section>`;
+
+        case 'text':
+            return `
+    <section style="background: ${isDark ? 'var(--background)' : '#ffffff'}; padding: 80px 20px;">
+        <div class="container fade-in" style="max-width: 800px;">
+            <p style="color: ${isDark ? 'var(--text)' : 'var(--text-dark)'}; font-size: 1.1rem; line-height: 1.8;">${section.data.text || ''}</p>
+        </div>
+    </section>`;
+
+        default:
+            return '';
+    }
 }
 
 app.listen(PORT, '0.0.0.0', () => {

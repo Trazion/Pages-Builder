@@ -319,33 +319,7 @@ function closePreview() {
 }
 
 function editPage(pageId) {
-    const page = pages.find(p => p.id === pageId);
-    if (!page) return;
-
-    editingPageId = pageId;
-    selectedTheme = page.themeId;
-    uploadedLogoPath = page.logoPath;
-
-    document.getElementById('brand-name').value = page.brandName;
-    document.getElementById('perfume-type').value = page.perfumeType || '';
-    document.getElementById('tagline').value = page.tagline || '';
-    document.getElementById('cta-text').value = page.ctaText || 'Get Offer';
-    document.getElementById('about-text').value = page.aboutText || '';
-
-    if (page.logoPath) {
-        const preview = document.getElementById('logo-preview');
-        preview.src = page.logoPath;
-        preview.classList.remove('hidden');
-        document.querySelector('.upload-placeholder').classList.add('hidden');
-    }
-
-    renderThemesGrid();
-    switchSection('create');
-
-    const submitBtn = document.querySelector('#create-form .btn-primary');
-    submitBtn.textContent = 'Update Page';
-    document.getElementById('create-form').removeEventListener('submit', handleCreatePage);
-    document.getElementById('create-form').addEventListener('submit', handleUpdatePage);
+    window.location.href = `/editor.html?id=${pageId}`;
 }
 
 async function handleUpdatePage(e) {

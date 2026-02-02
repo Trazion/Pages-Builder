@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Editor - Perfume Builder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/editor.css">
+</head>
+<body>
+    <div class="editor-container">
+        <header class="editor-header">
+            <div class="header-left">
+                <a href="/" class="back-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back
+                </a>
+                <h1 id="page-title">Edit Page</h1>
+            </div>
+            <div class="header-actions">
+                <button class="btn-secondary" id="preview-btn">Preview</button>
+                <button class="btn-primary" id="save-btn">Save Changes</button>
+            </div>
+        </header>
+
+        <div class="editor-main">
+            <aside class="editor-sidebar">
+                <div class="sidebar-section">
+                    <h3>Add Section</h3>
+                    <div class="add-section-list">
+                        <button class="add-section-btn" data-type="hero">
+                            <span class="icon">🎯</span> Hero
+                        </button>
+                        <button class="add-section-btn" data-type="about">
+                            <span class="icon">📝</span> About
+                        </button>
+                        <button class="add-section-btn" data-type="features">
+                            <span class="icon">⭐</span> Features
+                        </button>
+                        <button class="add-section-btn" data-type="offer">
+                            <span class="icon">🎁</span> Offer
+                        </button>
+                        <button class="add-section-btn" data-type="gallery">
+                            <span class="icon">🖼️</span> Gallery
+                        </button>
+                        <button class="add-section-btn" data-type="testimonials">
+                            <span class="icon">💬</span> Testimonials
+                        </button>
+                        <button class="add-section-btn" data-type="policy">
+                            <span class="icon">📋</span> Policy
+                        </button>
+                        <button class="add-section-btn" data-type="contact">
+                            <span class="icon">📧</span> Contact
+                        </button>
+                        <button class="add-section-btn" data-type="cta">
+                            <span class="icon">🔘</span> CTA Button
+                        </button>
+                        <button class="add-section-btn" data-type="text">
+                            <span class="icon">📄</span> Text Block
+                        </button>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>Page Settings</h3>
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <label>Brand Name</label>
+                            <input type="text" id="setting-brand-name">
+                        </div>
+                        <div class="form-group">
+                            <label>Tagline</label>
+                            <input type="text" id="setting-tagline">
+                        </div>
+                        <div class="form-group">
+                            <label>CTA Text</label>
+                            <input type="text" id="setting-cta">
+                        </div>
+                        <div class="form-group">
+                            <label>Theme</label>
+                            <select id="setting-theme"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>Sections</h3>
+                    <div class="sections-list" id="sections-list"></div>
+                </div>
+            </aside>
+
+            <main class="editor-canvas">
+                <div class="canvas-content" id="canvas-content"></div>
+            </main>
+        </div>
+    </div>
+
+    <div class="modal hidden" id="edit-modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 id="modal-title">Edit Section</h3>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body"></div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="modal-cancel">Cancel</button>
+                <button class="btn-primary" id="modal-save">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast hidden" id="toast"></div>
+
+    <script src="/js/editor.js"></script>
+</body>
+</html>
