@@ -13,7 +13,7 @@
       "offerTitle": "Exclusive Offer",
       "offerDescription": "Discover your signature scent with our exclusive collection.",
       "createdAt": "2026-02-02T15:09:54.050Z",
-      "updatedAt": "2026-02-02T15:45:25.561Z",
+      "updatedAt": "2026-02-02T15:49:46.744Z",
       "sections": [
         {
           "id": "hero",
@@ -71,7 +71,8 @@
           "type": "footer",
           "data": {}
         }
-      ]
+      ],
+      "ctaLink": "www.selinza.com"
     },
     {
       "id": "page-1770047208102",
