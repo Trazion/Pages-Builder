@@ -811,7 +811,7 @@ function generateSectionHtml(section, pageData, theme, isDark) {
     <section style="background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%); padding: 60px 20px;">
         <div class="container">
             <div class="features-grid" style="display: grid; grid-template-columns: repeat(${featureItems.length}, 1fr); gap: 30px; text-align: center; color: ${isDark ? 'var(--text)' : '#ffffff'};">
-                ${featureItems.map(item => `<div class="fade-in" style="padding: 20px;"><div style="font-size: 2rem; margin-bottom: 15px; opacity: 0.7;">${getIcon(item)}</div><span style="font-size: 0.85rem; font-weight: 500; letter-spacing: 2px;">${item}</span></div>`).join('')}
+                ${featureItems.map(item => `<div class="fade-in" style="padding: 20px;"><div style="font-size: 2rem; margin-bottom: 15px; filter: grayscale(1) brightness(2); opacity: 0.9;">${getIcon(item)}</div><span style="font-size: 0.85rem; font-weight: 500; letter-spacing: 2px;">${item}</span></div>`).join('')}
             </div>
         </div>
     </section>`;
