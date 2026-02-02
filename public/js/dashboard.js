@@ -46,20 +46,15 @@ function setupEventListeners() {
         });
     });
 
-    const createForm = document.getElementById('create-form');
-    if (createForm) {
-        createForm.addEventListener('submit', handleCreatePage);
-        console.log('Form event listener attached successfully');
-    } else {
-        console.error('Create form not found!');
-    }
-    
-    // Also add click handler to button as backup
+    // Direct click handler for create button
     const createBtn = document.getElementById('create-btn');
     if (createBtn) {
-        createBtn.addEventListener('click', (e) => {
-            console.log('Create button clicked via direct handler');
+        createBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            console.log('Create button clicked');
+            await handleCreatePage(e);
         });
+        console.log('Create button event listener attached');
     }
 
     const uploadArea = document.getElementById('upload-area');
