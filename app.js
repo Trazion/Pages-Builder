@@ -781,12 +781,37 @@ function generateSectionHtml(section, pageData, theme, isDark) {
     </section>`;
 
         case 'features':
-            const items = section.data.items || ['INSTALLMENT', '3 DAYS RETURN', 'CASH ON DELIVERY', 'FAST DELIVERY'];
+            const featureItems = section.data.items || ['INSTALLMENT', '3 DAYS RETURN', 'CASH ON DELIVERY', 'FAST DELIVERY'];
+            const featureIconsMap = {
+                'INSTALLMENT': '💳',
+                'INSTALLMENTS': '💳',
+                '3 DAYS RETURN': '🔄',
+                'RETURN': '🔄',
+                'CASH ON DELIVERY': '💵',
+                'COD': '💵',
+                'FAST DELIVERY': '🚚',
+                'DELIVERY': '🚚',
+                'FREE SHIPPING': '📦',
+                'SHIPPING': '📦',
+                'WARRANTY': '🛡️',
+                'GUARANTEE': '✅',
+                'ORIGINAL': '⭐',
+                'AUTHENTIC': '💎',
+                '24/7 SUPPORT': '📞',
+                'SUPPORT': '📞'
+            };
+            const getIcon = (item) => {
+                const upperItem = item.toUpperCase();
+                for (const [key, icon] of Object.entries(featureIconsMap)) {
+                    if (upperItem.includes(key)) return icon;
+                }
+                return '✨';
+            };
             return `
     <section style="background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%); padding: 60px 20px;">
         <div class="container">
-            <div class="features-grid" style="display: grid; grid-template-columns: repeat(${items.length}, 1fr); gap: 30px; text-align: center; color: ${isDark ? 'var(--text)' : '#ffffff'};">
-                ${items.map(item => `<div class="fade-in" style="padding: 20px;"><span style="font-size: 0.85rem; font-weight: 500; letter-spacing: 2px;">${item}</span></div>`).join('')}
+            <div class="features-grid" style="display: grid; grid-template-columns: repeat(${featureItems.length}, 1fr); gap: 30px; text-align: center; color: ${isDark ? 'var(--text)' : '#ffffff'};">
+                ${featureItems.map(item => `<div class="fade-in" style="padding: 20px;"><div style="font-size: 2rem; margin-bottom: 15px;">${getIcon(item)}</div><span style="font-size: 0.85rem; font-weight: 500; letter-spacing: 2px;">${item}</span></div>`).join('')}
             </div>
         </div>
     </section>`;

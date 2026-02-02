@@ -13,7 +13,65 @@
       "offerTitle": "Exclusive Offer",
       "offerDescription": "Discover your signature scent with our exclusive collection.",
       "createdAt": "2026-02-02T15:09:54.050Z",
-      "updatedAt": "2026-02-02T15:09:54.050Z"
+      "updatedAt": "2026-02-02T15:38:49.833Z",
+      "sections": [
+        {
+          "id": "hero",
+          "type": "hero",
+          "data": {
+            "tagline": "Luxury Scents. Timeless Elegance.",
+            "ctaText": "Get Offer"
+          }
+        },
+        {
+          "id": "about",
+          "type": "about",
+          "data": {
+            "title": "The Art of Fragrance",
+            "text": "Selinza represents the pinnacle of luxury perfumery. Each fragrance is meticulously crafted using the finest ingredients sourced from around the world, blending tradition with modern sophistication. Our master perfumers dedicate themselves to creating scents that transcend time, leaving an unforgettable impression wherever you go."
+          }
+        },
+        {
+          "id": "features",
+          "type": "features",
+          "data": {
+            "items": [
+              "INSTALLMENT",
+              "3 DAYS RETURN",
+              "CASH ON DELIVERY",
+              "FAST DELIVERY"
+            ]
+          }
+        },
+        {
+          "id": "policy",
+          "type": "policy",
+          "data": {
+            "email": "info@selinza.com",
+            "title": "Exchange & Return Policy",
+            "intro": "At Selinza, your satisfaction is our top priority. We allow our customers to open and inspect their orders upon delivery.",
+            "conditions": [
+              "The original box and packaging must be kept, even if the product has been opened.",
+              "The item must be in good condition, with all accessories and packaging included.",
+              "Returns are accepted within 3 days of receiving your order."
+            ],
+            "refundProcess": [
+              "Our courier will collect the return directly from your address.",
+              "Once the item is checked, your refund will be processed.",
+              "Cairo and Giza: Refund in cash on the spot when collecting the returned order.",
+              "Other governorates: Refund processed through shipping company."
+            ],
+            "notice": "If you receive a wrong or damaged product, please contact our customer service immediately.",
+            "bgColor": "#ffffff",
+            "textColor": "#000000"
+          }
+        },
+        {
+          "id": "footer",
+          "type": "footer",
+          "data": {}
+        }
+      ]
     }
   ]
 }
