@@ -50,8 +50,47 @@
                     <p>Build a stunning perfume landing page in minutes</p>
                 </div>
 
+                <div class="mode-toggle">
+                    <button type="button" class="mode-btn active" data-mode="standard">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                        </svg>
+                        Standard Mode
+                    </button>
+                    <button type="button" class="mode-btn" data-mode="prompt">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                        </svg>
+                        Advanced / Creative
+                    </button>
+                </div>
+
                 <form id="create-form" class="create-form">
-                    <div class="form-grid">
+                    <div id="prompt-mode-section" class="prompt-mode-section hidden">
+                        <div class="prompt-intro">
+                            <div class="prompt-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                                </svg>
+                            </div>
+                            <div class="prompt-intro-text">
+                                <h3>Describe Your Vision</h3>
+                                <p>Tell us about the landing page you want. We'll craft the copy, tone, and messaging to match your creative direction.</p>
+                            </div>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="creative-prompt">Your Creative Brief</label>
+                            <textarea id="creative-prompt" rows="6" placeholder="Example: I want a mysterious and seductive landing page for a night perfume. The tone should be dark and romantic, appealing to confident women who love bold scents. Use poetic language and create an air of mystery..."></textarea>
+                            <div class="prompt-hints">
+                                <span>Hint: Describe the mood, target audience, and emotional tone you want.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="standard-mode-section" class="form-grid">
                         <div class="form-group">
                             <label for="brand-name">Brand Name *</label>
                             <input type="text" id="brand-name" placeholder="e.g., Selinza" required>
@@ -102,8 +141,41 @@
                         </div>
                     </div>
 
+                    <div id="prompt-mode-essentials" class="form-grid hidden">
+                        <div class="form-group">
+                            <label for="prompt-brand-name">Brand Name *</label>
+                            <input type="text" id="prompt-brand-name" placeholder="e.g., Selinza">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Upload Brand Logo</label>
+                            <div class="upload-area" id="prompt-upload-area">
+                                <input type="file" id="prompt-logo-input" accept="image/*" hidden>
+                                <div class="upload-placeholder">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                                        <polyline points="21 15 16 10 5 21"/>
+                                    </svg>
+                                    <p>Click to upload or drag and drop</p>
+                                    <span>PNG, JPG, SVG up to 5MB</span>
+                                </div>
+                                <img id="prompt-logo-preview" class="logo-preview hidden" alt="Logo preview">
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Select Theme *</label>
+                            <div class="themes-grid" id="prompt-themes-grid"></div>
+                        </div>
+                    </div>
+
                     <div class="form-actions">
-                        <button type="submit" class="btn-primary">Generate Landing Page</button>
+                        <button type="submit" class="btn-primary" id="create-btn">Generate Landing Page</button>
+                        <div id="generating-indicator" class="generating-indicator hidden">
+                            <div class="spinner"></div>
+                            <span>AI is crafting your content...</span>
+                        </div>
                     </div>
                 </form>
             </section>

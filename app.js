@@ -2,6 +2,12 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const OpenAI = require('openai');
+
+const openai = new OpenAI({
+    apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY,
+    baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
+});
 
 const app = express();
 const PORT = 5000;
@@ -102,7 +108,7 @@ app.post('/api/upload-logo', upload.single('logo'), (req, res) => {
 });
 
 app.post('/api/pages', (req, res) => {
-    const { brandName, themeId, logoPath, tagline, ctaText, perfumeType, aboutText, offerTitle, offerDescription } = req.body;
+    const { brandName, themeId, logoPath, tagline, ctaText, perfumeType, aboutText, offerTitle, offerDescription, creativePrompt, creationMode } = req.body;
 
     if (!brandName || !themeId) {
         return res.status(400).json({ error: 'Brand name and theme are required' });
@@ -145,6 +151,8 @@ app.post('/api/pages', (req, res) => {
         offerTitle: finalOfferTitle,
         offerDescription: finalOfferDescription,
         sections: defaultSections,
+        creativePrompt: creativePrompt || null,
+        creationMode: creationMode || 'standard',
         createdAt,
         updatedAt: createdAt
     };
@@ -345,6 +353,67 @@ app.post('/api/ai/generate-copy', (req, res) => {
     const aboutText = aboutTexts[matchedType];
 
     res.json({ tagline, aboutText });
+});
+
+app.post('/api/ai/generate-from-prompt', async (req, res) => {
+    const { brandName, prompt, themeId } = req.body;
+
+    if (!prompt || !brandName) {
+        return res.status(400).json({ error: 'Brand name and prompt are required' });
+    }
+
+    try {
+        const themesData = loadThemes();
+        const theme = themesData.themes.find(t => t.id === themeId) || themesData.themes[0];
+
+        const systemPrompt = `You are an expert luxury perfume copywriter. Generate landing page content based on the user's creative brief.
+
+The content must:
+- Match the brand's voice and emotional tone described in the brief
+- Be luxurious and premium in feel
+- Create unique, compelling copy
+
+Generate the following fields as JSON:
+{
+  "tagline": "A short, impactful tagline (max 8 words)",
+  "aboutText": "A compelling about section (2-3 sentences, luxurious tone)",
+  "ctaText": "Call-to-action button text (2-4 words)",
+  "offerTitle": "A special offer title (3-6 words)",
+  "offerDescription": "Brief offer description (1 sentence)",
+  "featureItems": ["Feature 1", "Feature 2", "Feature 3", "Feature 4"]
+}
+
+Brand Name: ${brandName}
+Theme: ${theme.name} (${theme.mood.join(', ')})`;
+
+        const response = await openai.chat.completions.create({
+            model: 'gpt-4o-mini',
+            messages: [
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: prompt }
+            ],
+            response_format: { type: 'json_object' },
+            max_tokens: 500,
+            temperature: 0.8
+        });
+
+        const content = JSON.parse(response.choices[0].message.content);
+        res.json({
+            success: true,
+            ...content
+        });
+    } catch (error) {
+        console.error('AI generation error:', error);
+        res.json({
+            success: true,
+            tagline: 'Luxury Scents. Timeless Elegance.',
+            aboutText: `${brandName} represents the pinnacle of luxury perfumery.`,
+            ctaText: 'Get Offer',
+            offerTitle: 'Exclusive Launch Offer',
+            offerDescription: 'Be among the first to experience our signature collection.',
+            featureItems: ['Premium Quality', 'Exclusive Collection', 'Fast Delivery', 'Gift Packaging']
+        });
+    }
 });
 
 function generateAboutText(brandName) {

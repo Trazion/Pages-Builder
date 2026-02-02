@@ -1,9 +1,12 @@
 let themes = [];
 let pages = [];
 let selectedTheme = null;
+let promptSelectedTheme = null;
 let uploadedLogoPath = null;
+let promptUploadedLogoPath = null;
 let editingPageId = null;
 let deletingPageId = null;
+let currentMode = 'standard';
 
 document.addEventListener('DOMContentLoaded', init);
 
@@ -12,6 +15,7 @@ async function init() {
     await loadPages();
     setupEventListeners();
     renderThemesGrid();
+    renderPromptThemesGrid();
     renderThemesShowcase();
     renderPagesGrid();
 }
@@ -72,6 +76,36 @@ function setupEventListeners() {
     document.getElementById('ai-suggest-btn').addEventListener('click', handleAISuggest);
     document.getElementById('ai-copy-btn').addEventListener('click', handleAICopy);
 
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchMode(btn.dataset.mode));
+    });
+
+    const promptUploadArea = document.getElementById('prompt-upload-area');
+    const promptLogoInput = document.getElementById('prompt-logo-input');
+
+    if (promptUploadArea && promptLogoInput) {
+        promptUploadArea.addEventListener('click', () => promptLogoInput.click());
+        promptUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            promptUploadArea.classList.add('dragover');
+        });
+        promptUploadArea.addEventListener('dragleave', () => {
+            promptUploadArea.classList.remove('dragover');
+        });
+        promptUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            promptUploadArea.classList.remove('dragover');
+            if (e.dataTransfer.files.length) {
+                handlePromptLogoUpload(e.dataTransfer.files[0]);
+            }
+        });
+        promptLogoInput.addEventListener('change', (e) => {
+            if (e.target.files.length) {
+                handlePromptLogoUpload(e.target.files[0]);
+            }
+        });
+    }
+
     document.getElementById('close-preview').addEventListener('click', closePreview);
     document.getElementById('cancel-delete').addEventListener('click', () => {
         document.getElementById('confirm-modal').classList.add('hidden');
@@ -91,6 +125,28 @@ function switchSection(sectionName) {
     }
 }
 
+function switchMode(mode) {
+    currentMode = mode;
+
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.mode === mode);
+    });
+
+    const standardSection = document.getElementById('standard-mode-section');
+    const promptSection = document.getElementById('prompt-mode-section');
+    const promptEssentials = document.getElementById('prompt-mode-essentials');
+
+    if (mode === 'standard') {
+        standardSection.classList.remove('hidden');
+        promptSection.classList.add('hidden');
+        promptEssentials.classList.add('hidden');
+    } else {
+        standardSection.classList.add('hidden');
+        promptSection.classList.remove('hidden');
+        promptEssentials.classList.remove('hidden');
+    }
+}
+
 function renderThemesGrid() {
     const grid = document.getElementById('themes-grid');
     grid.innerHTML = themes.map(theme => `
@@ -107,6 +163,62 @@ function renderThemesGrid() {
             <div class="theme-selected-badge">✓</div>
         </div>
     `).join('');
+}
+
+function renderPromptThemesGrid() {
+    const grid = document.getElementById('prompt-themes-grid');
+    if (!grid) return;
+    grid.innerHTML = themes.map(theme => `
+        <div class="theme-card ${promptSelectedTheme === theme.id ? 'selected' : ''}" 
+             data-theme-id="${theme.id}"
+             onclick="selectPromptTheme('${theme.id}')">
+            <div class="theme-preview" style="background: ${theme.colors.primary};">
+                <span style="color: ${theme.colors.accent};">Aa</span>
+            </div>
+            <div class="theme-info">
+                <h4>${theme.name}</h4>
+                <p>${theme.mood.slice(0, 2).join(', ')}</p>
+            </div>
+            <div class="theme-selected-badge">✓</div>
+        </div>
+    `).join('');
+}
+
+function selectPromptTheme(themeId) {
+    promptSelectedTheme = themeId;
+    document.querySelectorAll('#prompt-themes-grid .theme-card').forEach(card => {
+        card.classList.toggle('selected', card.dataset.themeId === themeId);
+    });
+}
+
+async function handlePromptLogoUpload(file) {
+    if (!file.type.match(/image.*/)) {
+        showToast('Please upload an image file', 'error');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('logo', file);
+
+    try {
+        const response = await fetch('/api/upload-logo', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+
+        if (data.success) {
+            promptUploadedLogoPath = data.path;
+            const preview = document.getElementById('prompt-logo-preview');
+            const placeholder = document.querySelector('#prompt-upload-area .upload-placeholder');
+            preview.src = data.path;
+            preview.classList.remove('hidden');
+            placeholder.classList.add('hidden');
+            showToast('Logo uploaded successfully', 'success');
+        }
+    } catch (error) {
+        showToast('Failed to upload logo', 'error');
+    }
 }
 
 function renderThemesShowcase() {
@@ -259,6 +371,14 @@ async function handleAICopy() {
 async function handleCreatePage(e) {
     e.preventDefault();
 
+    if (currentMode === 'prompt') {
+        await handlePromptModeCreate();
+    } else {
+        await handleStandardModeCreate();
+    }
+}
+
+async function handleStandardModeCreate() {
     const brandName = document.getElementById('brand-name').value;
     if (!brandName) {
         showToast('Please enter a brand name', 'error');
@@ -298,13 +418,85 @@ async function handleCreatePage(e) {
     }
 }
 
+async function handlePromptModeCreate() {
+    const brandName = document.getElementById('prompt-brand-name').value;
+    const prompt = document.getElementById('creative-prompt').value;
+
+    if (!brandName) {
+        showToast('Please enter a brand name', 'error');
+        return;
+    }
+    if (!promptSelectedTheme) {
+        showToast('Please select a theme', 'error');
+        return;
+    }
+    if (!prompt) {
+        showToast('Please describe your landing page vision', 'error');
+        return;
+    }
+
+    const createBtn = document.getElementById('create-btn');
+    const indicator = document.getElementById('generating-indicator');
+    createBtn.classList.add('hidden');
+    indicator.classList.remove('hidden');
+
+    try {
+        const aiResponse = await fetch('/api/ai/generate-from-prompt', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ brandName, prompt, themeId: promptSelectedTheme })
+        });
+        const aiData = await aiResponse.json();
+
+        const pageData = {
+            brandName,
+            themeId: promptSelectedTheme,
+            logoPath: promptUploadedLogoPath,
+            tagline: aiData.tagline || 'Luxury Scents. Timeless Elegance.',
+            ctaText: aiData.ctaText || 'Get Offer',
+            aboutText: aiData.aboutText,
+            offerTitle: aiData.offerTitle,
+            offerDescription: aiData.offerDescription,
+            creativePrompt: prompt,
+            creationMode: 'prompt'
+        };
+
+        const response = await fetch('/api/pages', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(pageData)
+        });
+        const data = await response.json();
+
+        if (data.success) {
+            pages.push(data.page);
+            showToast('AI-powered landing page created!', 'success');
+            resetForm();
+            previewPage(data.page.id);
+        }
+    } catch (error) {
+        showToast('Failed to create page', 'error');
+    } finally {
+        createBtn.classList.remove('hidden');
+        indicator.classList.add('hidden');
+    }
+}
+
 function resetForm() {
     document.getElementById('create-form').reset();
     selectedTheme = null;
+    promptSelectedTheme = null;
     uploadedLogoPath = null;
+    promptUploadedLogoPath = null;
     document.getElementById('logo-preview').classList.add('hidden');
-    document.querySelector('.upload-placeholder').classList.remove('hidden');
+    document.querySelector('#upload-area .upload-placeholder').classList.remove('hidden');
+    const promptPreview = document.getElementById('prompt-logo-preview');
+    if (promptPreview) {
+        promptPreview.classList.add('hidden');
+        document.querySelector('#prompt-upload-area .upload-placeholder')?.classList.remove('hidden');
+    }
     renderThemesGrid();
+    renderPromptThemesGrid();
 }
 
 function previewPage(pageId) {
@@ -423,6 +615,7 @@ function showToast(message, type = 'success') {
 
 window.switchSection = switchSection;
 window.selectTheme = selectTheme;
+window.selectPromptTheme = selectPromptTheme;
 window.previewPage = previewPage;
 window.editPage = editPage;
 window.duplicatePage = duplicatePage;

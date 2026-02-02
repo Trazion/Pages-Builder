@@ -8,8 +8,22 @@ A professional perfume-focused Landing Page Builder system that allows creating,
 - **Page Generation**: Create landing pages with brand name, logo, and custom content
 - **Logo Upload**: Support for PNG, JPG, SVG, WebP images
 - **AI Assistance**: Theme suggestions and copy generation based on perfume type
+- **Dual Creation Mode**: Standard mode (manual input) or Prompt Mode (AI-powered)
 - **Pages Management**: View, edit, duplicate, and delete pages
 - **Live Preview**: Preview generated pages in real-time
+- **Visual Editor**: WYSIWYG editor with section management, color pickers, and SVG icons
+
+## Dual Creation Mode
+### Standard Mode
+- Manual input for brand name, tagline, about text, CTA
+- Select theme and upload logo
+- AI suggestions available for theme and copy
+
+### Prompt Mode (Advanced / Creative)
+- Describe your landing page vision in a creative brief
+- AI generates: tagline, about text, CTA, offer title, offer description
+- Tone and style match your description (luxury, mysterious, romantic, bold, etc.)
+- Original prompt saved with page for future regeneration
 
 ## Project Structure
 ```
@@ -45,16 +59,18 @@ A professional perfume-focused Landing Page Builder system that allows creating,
 ## API Endpoints
 - `GET /api/themes` - List all themes
 - `GET /api/pages` - List all pages
-- `POST /api/pages` - Create new page
+- `POST /api/pages` - Create new page (supports creativePrompt and creationMode)
 - `PUT /api/pages/:id` - Update page
 - `POST /api/pages/:id/duplicate` - Duplicate page
 - `DELETE /api/pages/:id` - Delete page
 - `POST /api/upload-logo` - Upload logo image
 - `POST /api/ai/suggest-theme` - AI theme suggestion
-- `POST /api/ai/generate-copy` - AI copy generation
+- `POST /api/ai/generate-copy` - AI copy generation (standard mode)
+- `POST /api/ai/generate-from-prompt` - AI content generation from creative prompt (prompt mode)
 
 ## Tech Stack
 - Node.js + Express
+- OpenAI API (via Replit AI Integrations)
 - Vanilla JavaScript
 - HTML/CSS
 - Multer (file uploads)
