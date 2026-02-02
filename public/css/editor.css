@@ -407,6 +407,79 @@ body {
     padding-right: 40px;
 }
 
+/* Logo Upload in Editor */
+.logo-upload-area {
+    border: 2px dashed var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.3s var(--transition-smooth);
+    background: var(--bg-input);
+    text-align: center;
+}
+
+.logo-upload-area:hover {
+    border-color: var(--accent);
+    background: var(--bg-elevated);
+}
+
+.logo-preview {
+    position: relative;
+    display: inline-block;
+}
+
+.logo-preview img {
+    max-width: 100%;
+    max-height: 80px;
+    border-radius: 6px;
+    object-fit: contain;
+}
+
+.logo-preview.hidden {
+    display: none;
+}
+
+.remove-logo-btn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 24px;
+    height: 24px;
+    background: var(--danger);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: transform 0.2s;
+}
+
+.remove-logo-btn:hover {
+    transform: scale(1.1);
+}
+
+.upload-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
+}
+
+.upload-placeholder svg {
+    opacity: 0.5;
+}
+
+.upload-placeholder span {
+    font-size: 0.75rem;
+}
+
+.upload-placeholder.hidden {
+    display: none;
+}
+
 .sections-list {
     display: flex;
     flex-direction: column;

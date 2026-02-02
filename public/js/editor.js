@@ -78,6 +78,19 @@ function setupEventListeners() {
     document.getElementById('setting-cta-link').addEventListener('input', handleSettingsChange);
     document.getElementById('setting-theme').addEventListener('change', handleSettingsChange);
 
+    // Logo upload handlers
+    const uploadArea = document.getElementById('editor-upload-area');
+    const logoInput = document.getElementById('editor-logo-input');
+    const removeBtn = document.getElementById('remove-logo-btn');
+
+    uploadArea.addEventListener('click', (e) => {
+        if (e.target.closest('.remove-logo-btn')) return;
+        logoInput.click();
+    });
+
+    logoInput.addEventListener('change', handleLogoUpload);
+    removeBtn.addEventListener('click', handleLogoRemove);
+
     window.addEventListener('beforeunload', (e) => {
         if (hasChanges) {
             e.preventDefault();
@@ -96,6 +109,24 @@ function populateSettings() {
     themeSelect.innerHTML = themes.map(t =>
         `<option value="${t.id}" ${t.id === pageData.themeId ? 'selected' : ''}>${t.name}</option>`
     ).join('');
+
+    // Populate logo
+    updateLogoPreview();
+}
+
+function updateLogoPreview() {
+    const preview = document.getElementById('editor-logo-preview');
+    const placeholder = document.getElementById('editor-upload-placeholder');
+    const img = document.getElementById('editor-logo-img');
+
+    if (pageData.logoPath) {
+        img.src = pageData.logoPath;
+        preview.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+    } else {
+        preview.classList.add('hidden');
+        placeholder.classList.remove('hidden');
+    }
 }
 
 function handleSettingsChange() {
@@ -106,6 +137,44 @@ function handleSettingsChange() {
     pageData.themeId = document.getElementById('setting-theme').value;
     hasChanges = true;
     renderCanvas();
+}
+
+async function handleLogoUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('logo', file);
+
+    try {
+        const response = await fetch('/api/upload-logo', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            pageData.logoPath = result.path;
+            updateLogoPreview();
+            hasChanges = true;
+            renderCanvas();
+            showToast('Logo uploaded successfully');
+        } else {
+            showToast(result.error || 'Failed to upload logo', 'error');
+        }
+    } catch (error) {
+        showToast('Failed to upload logo', 'error');
+    }
+}
+
+function handleLogoRemove(e) {
+    e.stopPropagation();
+    pageData.logoPath = null;
+    document.getElementById('editor-logo-input').value = '';
+    updateLogoPreview();
+    hasChanges = true;
+    renderCanvas();
+    showToast('Logo removed');
 }
 
 function getTheme() {
